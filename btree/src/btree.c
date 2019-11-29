@@ -7,6 +7,7 @@
 // 成功したらkeyのある節を返す
 // 失敗したらNULLを返す
 NODE *search(NODE *node, KEY key) {
+    // // 線形探索
     // int i = 0;
     // // 節からkeyがどの部分木に入るのか
     // // 調べる
@@ -14,21 +15,28 @@ NODE *search(NODE *node, KEY key) {
     //     i++;
     // }
 
-    // node->keysからkeyを二分探索して
-    // どの部分木にいるのかを調べる
+    // 二分探索
+    // keyがどの部分木にいるのかを調べる
     int left = -1, right = node->count_keys-1;
     while (left+1 < right) {
         int mid = (left+right)/2;
+        printf("left %d mid %d right %d\n", left, mid, right);
         if (key <= node->keys[mid]) {
             right = mid;
         } else {
             if (left == mid) {
             // nodeの最後尾のキーよりもkeyが多きとき
-                right += 1;
                 break;
             }
             left = mid;
         }
+    }
+    printf("%d\n", right);
+
+    // node->count_keysが1個の時
+    // node->keysの最後よりkeyが大きい時
+    if (key > node->keys[right]) {
+        right += 1;
     }
 
     // 探索成功
