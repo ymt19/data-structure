@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef _BTREE_H_
+#define _BTREE_H_
 
 // 1つの節のキー数を決める最小次数
 // MIN_DIGREE >= 2 が条件
@@ -23,9 +23,11 @@ typedef struct node {
     KEY keys[MIN_DEGREE*2-1];                // キーの値
 } NODE;
 
-NODE *search(NODE*, KEY);
-NODE *new_node(void);
-NODE *new_tree(void);
-void split_tree(NODE*, int, NODE*);
+NODE *search (NODE*, KEY);
+NODE *new_node (void);
+NODE *new_tree (void);
+void split_tree (NODE*, int, NODE*);
 void insert (NODE**, KEY);
 void recursion_insert (NODE*, KEY);
+
+#endif

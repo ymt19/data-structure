@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "btree.h"
+#include "queue.h"
 
 // keyを探索する
 // nodeはその木の根
@@ -20,7 +21,6 @@ NODE *search(NODE *node, KEY key) {
     int left = -1, right = node->count_keys-1;
     while (left+1 < right) {
         int mid = (left+right)/2;
-        printf("left %d mid %d right %d\n", left, mid, right);
         if (key <= node->keys[mid]) {
             right = mid;
         } else {
@@ -31,7 +31,6 @@ NODE *search(NODE *node, KEY key) {
             left = mid;
         }
     }
-    printf("%d\n", right);
 
     // node->count_keysが1個の時
     // node->keysの最後よりkeyが大きい時
@@ -62,7 +61,7 @@ KEY find_minkey (NODE *node) {
 }
 
 // 新しくノードを作る
-NODE *new_node (void) {
+NODE *make_node (void) {
     NODE *node = (NODE*)malloc(sizeof(NODE));
     if (node == NULL) {
         printf("memory allocation error!\n");
@@ -73,7 +72,7 @@ NODE *new_node (void) {
 
 // 新しく木を作る
 NODE *new_tree (void) {
-    NODE *root = new_node();
+    NODE *root = make_node();
     root->nodekind = LEAF;
     root->count_keys = 0;
     return root;
@@ -85,7 +84,7 @@ NODE *new_tree (void) {
 // order(zero-based indexing)がparentに入る子のoldercの番号
 void split_tree (NODE *parent, int order, NODE *olderc) {
     // oldercが分割された片方を格納する
-    NODE *youngerc = new_node();
+    NODE *youngerc = make_node();
     youngerc->nodekind = olderc->nodekind;
     youngerc->count_keys = MIN_DEGREE-1;
 
@@ -127,7 +126,7 @@ void insert (NODE  **root, KEY key) {
     // 根が飽和状態の時に根を分割する
     // この場合のみ高さが増える
 
-        NODE *new_root = new_node();
+        NODE *new_root = make_node();
         new_root->nodekind = INTERNAL;
         new_root->count_keys = 0;
         new_root->childs[0] = *root;
