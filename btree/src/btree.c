@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "btree.h"
-#include "queue.h"
 
 // keyを探索する
 // nodeはその木の根
